@@ -16,34 +16,43 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    playerPoints = 0;
-    computerPoints = 0;
-    for (let i = 0; i < 5; i++) {
+playerPoints = 0
+computerPoints = 0
+const container = document.querySelector('.container')
+const div = document.createElement('div')
+
+const buttons = document.querySelectorAll('button')
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
         let computerChoice = getComputerChoice()
-        let playerChoice = (prompt("Input rock, paper or scissors.")).toLowerCase()
+        let playerChoice = `${button.id}`
         result = playRound(playerChoice, computerChoice)
+        div.classList.add('content')
         if (result == 1) {
             playerPoints++;
-            console.log(`You win! ${playerChoice} beats ${computerChoice}`);
+            div.textContent = `You win! ${playerChoice} beats ${computerChoice}. Player: ${playerPoints}. Computer: ${computerPoints}`;
+            checkWinner()
         }
         else if (result == 2) {
             computerPoints++;
-            console.log(`You lose! ${computerChoice} beats ${playerChoice}`);
+            div.textContent = `You lose! ${computerChoice} beats ${playerChoice}. Player: ${playerPoints}. Computer: ${computerPoints}`;
+            checkWinner()
         }
         else {
-            console.log("It is a draw!");
+            div.textContent = "It is a draw!";
         }
-    }
-    if (playerPoints > computerPoints) {
-        console.log("Congrats! You won the game.");
-    }
-    else if (computerPoints > playerPoints) {
-        console.log("You lost the game.");
-    }
-    else {
-        console.log("It is a tie.");
-    }
-}
+        container.appendChild(div)
+    })
+})
 
-game()
+function checkWinner() {
+    const winnerDiv = document.createElement('div')
+    if (playerPoints == 5) {
+        winnerDiv.textContent = "You are the winner!"
+    }
+    else if (computerPoints == 5) {
+        winnerDiv.textContent = "The computer wins!"
+    }
+
+    container.appendChild(winnerDiv)
+}
